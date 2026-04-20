@@ -378,12 +378,18 @@ def build_palace() -> None:
                    z_top=BASE_H + 2.0,
                    count=9, color=red_dome, stone=stone, gold=gold)
 
-    # Camera
+    # Camera — placed well back, aimed at the central tower mid-height
     cam_data = bpy.data.cameras.new("PalaceCam")
     cam = bpy.data.objects.new("PalaceCam", cam_data)
     bpy.context.collection.objects.link(cam)
-    cam.location = Vector((0, -75, 18))
-    cam.rotation_euler = (math.radians(78), 0, 0)
+    cam.location = Vector((0, -110, 22))
+    cam_target = bpy.data.objects.new("CamTarget", None)
+    cam_target.location = (0, 0, 13)
+    bpy.context.collection.objects.link(cam_target)
+    track = cam.constraints.new(type="TRACK_TO")
+    track.target = cam_target
+    track.track_axis = "TRACK_NEGATIVE_Z"
+    track.up_axis = "UP_Y"
     cam_data.lens = 50
     bpy.context.scene.camera = cam
 
